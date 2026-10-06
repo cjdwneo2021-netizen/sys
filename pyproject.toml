@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "studybot"
+version = "0.1.0"
+description = "Colab and Drive lecture notes with Markdown memory on GitHub"
+requires-python = ">=3.11"
+dependencies = ["requests>=2.32,<3", "google-auth>=2.40,<3", "google-genai==2.27.0"]
+
+[project.scripts]
+studybot = "studybot.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["studybot*"]
