@@ -79,6 +79,55 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(synchronize(self.config, drive, now=self.now + 11), [])
         self.assertFalse((self.root / "materials/lecture/manifest.json").exists())
 
+    def test_root_file_is_imported_and_generates_note(self):
+        drive = FakeDrive()
+        drive.children = lambda folder_id: [dict(drive.item)]
+        self.assertEqual(synchronize(self.config, drive, now=self.now), [])
+        self.assertEqual(synchronize(self.config, drive, now=self.now + 5), [])
+        self.assertEqual(synchronize(self.config, drive, now=self.now + 11), ["f1"])
+        manifest = read_json(self.root / "materials/f1/manifest.json")
+        self.assertEqual(manifest["title"], "lesson.ipynb")
+        self.assertEqual(generate_notes(self.config, Generator(self.config, FakeBackend())), ["f1"])
+        self.assertEqual(synchronize(self.config, drive, now=self.now + 20), [])
+        self.assertEqual(drive.downloads, 1)
+
+    def test_root_file_change_during_download_is_deferred(self):
+        drive = FakeDrive()
+        drive.children = lambda folder_id: [dict(drive.item)]
+        synchronize(self.config, drive, now=self.now)
+        drive.unstable = True
+        self.assertEqual(synchronize(self.config, drive, now=self.now + 11), [])
+        self.assertFalse((self.root / "materials/f1/manifest.json").exists())
+
+    def test_excel_copy_preserves_cells_formulas_and_cached_values(self):
+        path = self.root / "lesson.xlsx의 사본"
+        with ZipFile(path, "w") as archive:
+            archive.writestr("[Content_Types].xml", '''<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+</Types>''')
+            archive.writestr("xl/workbook.xml", '''<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="전처리" sheetId="1" r:id="rId1"/></sheets></workbook>''')
+            archive.writestr("xl/_rels/workbook.xml.rels", '''<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>''')
+            archive.writestr("xl/worksheets/sheet1.xml", '''<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><dimension ref="A1:D3"/><sheetData>
+<row r="1"><c r="A1" t="inlineStr"><is><t>문서 단어 행렬</t></is></c></row>
+<row r="2"><c r="A2"><v>0</v></c><c r="B2" t="b"><v>0</v></c><c r="C2"><f>SUM(A2,3)</f><v>3</v></c><c r="D2"><f>SUM(A2,4)</f><v></v></c></row>
+<row r="3"><c r="A3" t="e"><v>#DIV/0!</v></c></row>
+</sheetData></worksheet>''')
+        sources = extract_sources(self.root, {"files": [{"id": "excel", "name": path.name,
+            "path": path.name, "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "status": "downloaded"}]})
+        self.assertEqual([source["id"] for source in sources],
+                         ["excel:sheet-1:row-1", "excel:sheet-1:row-2", "excel:sheet-1:row-3"])
+        self.assertIn("전처리", sources[0]["label"])
+        self.assertIn("문서 단어 행렬", sources[0]["text"])
+        self.assertIn("A2: 0", sources[1]["text"])
+        self.assertIn("B2: False", sources[1]["text"])
+        self.assertIn("=SUM(A2,3) [저장된 결과: 3]", sources[1]["text"])
+        self.assertIn("저장된 결과 없음; 수식을 재계산하지 않음", sources[1]["text"])
+        self.assertIn("#DIV/0! [Excel 오류]", sources[2]["text"])
+
     def test_code_is_not_executed_and_errors_keep_order(self):
         write_json(self.root / "n.ipynb", {"cells": [
             {"cell_type": "markdown", "source": ["질문"]},
@@ -117,7 +166,7 @@ class PipelineTests(unittest.TestCase):
         render(self.root)
         self.assertEqual(backend.calls, calls)
         self.assertEqual((self.root / "downloads/lecture.zip").read_bytes(), before)
-        self.assertIn("notes/lecture.md", (self.root / "README.md").read_text())
+        self.assertIn("notes/lecture.md", (self.root / "README.md").read_text("utf-8"))
 
     def test_invented_source_rejected(self):
         with self.assertRaises(ValueError):
@@ -127,7 +176,7 @@ class PipelineTests(unittest.TestCase):
         write_text(self.root / "README.md", "# My course\nManual introduction.\n")
         render(self.root)
         render(self.root)
-        text = (self.root / "README.md").read_text()
+        text = (self.root / "README.md").read_text("utf-8")
         self.assertIn("Manual introduction.", text)
         self.assertEqual(text.count("<!-- studybot:start -->"), 1)
 

@@ -3,6 +3,12 @@ on:
   schedule:
     - cron: '17 * * * *'
   workflow_dispatch:
+    inputs:
+      idle_seconds:
+        description: '자료 안정 대기(초). 기본 2700, 확인된 예시를 테스트할 때만 짧게 지정'
+        type: number
+        default: 2700
+        required: false
 permissions:
   contents: write
   id-token: write
@@ -20,6 +26,7 @@ jobs:
       MODEL_NAME: ${{ vars.MODEL_NAME }}
       MAX_MODEL_CALLS: ${{ vars.MAX_MODEL_CALLS || '8' }}
       MAX_DAILY_MODEL_CALLS: ${{ vars.MAX_DAILY_MODEL_CALLS || '32' }}
+      IDLE_SECONDS: ${{ inputs.idle_seconds || '2700' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:

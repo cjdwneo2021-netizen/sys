@@ -7,7 +7,7 @@ name = "studybot"
 version = "0.1.0"
 description = "Colab and Drive lecture notes with Markdown memory on GitHub"
 requires-python = ">=3.11"
-dependencies = ["requests>=2.32,<3", "google-auth>=2.40,<3", "google-genai==2.27.0"]
+dependencies = ["requests>=2.32,<3", "google-auth>=2.40,<3", "google-genai==2.27.0", "openpyxl>=3.1.5,<4"]
 
 [project.scripts]
 studybot = "studybot.cli:main"

@@ -1,9 +1,49 @@
 import json
 from pathlib import Path
+from zipfile import ZipFile
 
 from .storage import contained
 
 PROMPT_VERSION = "lecture-v1"
+XLSX_MIME = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
+def spreadsheet_rows(path):
+    """Read cells and saved formula results without executing or updating a workbook."""
+    from openpyxl import load_workbook
+    with ZipFile(path) as archive:
+        if sum(item.file_size for item in archive.infolist()) > 50 * 1024 * 1024:
+            raise ValueError("Expanded spreadsheet exceeds 50 MiB; split the workbook")
+    # File objects also handle Drive copies whose names no longer end in .xlsx.
+    with path.open("rb") as formulas_file, path.open("rb") as values_file:
+        formulas = load_workbook(formulas_file, read_only=True, data_only=False, keep_links=False)
+        values = None
+        try:
+            values = load_workbook(values_file, read_only=True, data_only=True, keep_links=False)
+            for sheet_index, sheet in enumerate(formulas.worksheets, 1):
+                if (sheet.max_row or 1) * (sheet.max_column or 1) > 200_000:
+                    raise ValueError("Spreadsheet grid exceeds 200,000 cells; split the worksheet")
+                saved_rows = values[sheet.title].iter_rows()
+                for row in sheet.iter_rows():
+                    saved_row = next(saved_rows, ())
+                    cells = []
+                    for position, cell in enumerate(row):
+                        if cell.value is None:
+                            continue
+                        text = str(cell.value)
+                        if cell.data_type == "f":
+                            cached = saved_row[position].value if position < len(saved_row) else None
+                            text += (f" [저장된 결과: {cached}]" if cached is not None else
+                                     " [저장된 결과 없음; 수식을 재계산하지 않음]")
+                        elif cell.data_type == "e":
+                            text += " [Excel 오류]"
+                        cells.append(f"{cell.coordinate}: {text}")
+                    if cells:
+                        row_number = next(cell.row for cell in row if cell.value is not None)
+                        yield sheet_index, sheet.title, row_number, "\t".join(cells)
+        finally:
+            formulas.close()
+            if values is not None:
+                values.close()
 
 def extract_sources(root, manifest):
     """Never execute source code. Cell order and textual error output are preserved."""
@@ -38,6 +78,10 @@ def extract_sources(root, manifest):
                             f'{entry["name"]} / cell {index} output {position}', text)
         elif suffix in (".txt", ".md", ".py"):
             add(entry["id"], entry["name"], path.read_text("utf-8-sig"))
+        elif suffix == ".xlsx" or entry.get("mime_type") == XLSX_MIME:
+            for sheet_index, title, row, text in spreadsheet_rows(path):
+                add(f'{entry["id"]}:sheet-{sheet_index}:row-{row}',
+                    f'{entry["name"]} / {title} / row {row}', text)
     return result
 
 def chunks(sources, limit=6000):

@@ -103,10 +103,9 @@ def synchronize(config, drive, now=None):
     imported = []
     try:
         for lecture in sorted(drive.children(config.folder_id), key=lambda item: item["id"]):
-            if lecture["mimeType"] != FOLDER:
-                continue
+            root_file = lecture["mimeType"] != FOLDER
             lecture_id = checked_id(lecture["id"])
-            items = drive.tree(lecture_id)
+            items = [dict(lecture, relative=lecture["name"])] if root_file else drive.tree(lecture_id)
             if any(item["name"] == ".studybot-busy" for item in items):
                 continue
             current = fingerprint(items, lecture["name"])
@@ -143,7 +142,11 @@ def synchronize(config, drive, now=None):
                     entry.update(path=relative, sha256=hashlib.sha256(data).hexdigest(), status="downloaded")
                     pending[relative] = data
                 entries.append(entry)
-            if not stable or fingerprint(drive.tree(lecture_id), drive.info(lecture_id)["name"]) != current:
+            if not stable:
+                continue
+            latest = drive.info(lecture_id)
+            latest_items = [dict(latest, relative=latest["name"])] if root_file else drive.tree(lecture_id)
+            if fingerprint(latest_items, latest["name"]) != current:
                 continue
             for relative, data in pending.items():
                 write_bytes(config.root / relative, data)
