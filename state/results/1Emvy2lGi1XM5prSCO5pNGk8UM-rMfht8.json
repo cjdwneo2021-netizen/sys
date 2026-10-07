@@ -1,0 +1,604 @@
+{
+  "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8",
+  "note": {
+    "concepts": [
+      {
+        "explanation": "텍스트 데이터를 분석 가능한 형태로 변환하기 위해 적용하는 소문자화, 구두점 제거, 토큰화, 불용어 제거, 표제어 추출 등의 과정을 의미합니다.",
+        "name": "전처리 단계 (Preprocessing Step)",
+        "source_ids": [
+          "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-6",
+          "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-6"
+        ]
+      },
+      {
+        "explanation": "문서-단어 행렬로, 행은 문서를 나타내고 열은 특정 단어를 나타내며 각 교차점에 단어의 등장 빈도를 기록하는 정형 데이터 구조입니다.",
+        "name": "DTM (Document-Term Matrix)",
+        "source_ids": [
+          "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-2",
+          "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-10"
+        ]
+      },
+      {
+        "explanation": "조사나 불필요한 접미사를 제거하여 동일한 개념을 하나로 통합하는 전처리 과정입니다.",
+        "name": "형태 단순화 (Normalization)",
+        "source_ids": [
+          "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-8"
+        ]
+      },
+      {
+        "explanation": "단어의 어미 변화를 사전적 기본 형태로 통일하여 데이터의 변형을 통합하는 과정입니다.",
+        "name": "기본형 정리 (Lemmatization)",
+        "source_ids": [
+          "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-9"
+        ]
+      }
+    ],
+    "markdown": "## 공부 노트: NLP 전처리 단계 설계 및 DTM 구성\n\n### 1. 강의 개요\n본 강의는 자연어 처리의 핵심인 전처리 설계와 DTM 구성을 학습합니다. 특히 텍스트 데이터를 분석 가능한 수치 행렬로 바꾸는 변환 과정을 직접 실습합니다.\n\n### 2. 학습 내용\n- 전처리 설계: 소문자화, 구두점 제거, 토큰화, 불용어 제거, 표제어 추출을 포함합니다. 특히 한국어 처리에 필수적인 '형태 단순화'와 '기본형 정리'를 다룹니다.\n- DTM 구성: 각 문서의 토큰 빈도를 행렬로 표현하여 비정형 데이터를 정형 데이터로 변환합니다.\n\n### 3. 이전 강의 참고\n- 자연어 데이터의 기초적인 수치화 방법론과 희소성(Sparsity)에 대한 개념을 복습합니다.\n\n### 4. AI 보충 설명 및 분석\n- 전처리 단계의 설계는 DTM의 희소성에 큰 영향을 미칩니다. 조사 제거와 표제어 통합은 어휘 사전(Vocabulary) 크기를 줄여 분석 효율을 높이지만, 과도한 통합은 의미의 왜곡을 초래할 수 있습니다.\n\n### 5. 복습 체크리스트\n- [ ] 전처리 단계별 데이터의 변화를 직접 추적했는가?\n- [ ] DTM 행렬의 행과 열이 의미하는 바를 설명할 수 있는가?\n- [ ] 표제어화와 단순 형태소 분석의 차이를 이해했는가?",
+    "questions": [
+      "각 전처리 단계의 적용 순서가 DTM 결과에 미치는 영향은 무엇인가?",
+      "형태 단순화와 기본형 정리 과정에서 의미가 완전히 동일하지 않은 단어들을 어디까지 통합해야 하는가?",
+      "DTM 구성 시 단어 빈도가 0인 경우와 2 이상인 경우를 처리하는 알고리즘적 정교화 방안은 무엇인가?",
+      "불용어 제거 및 표제어화 여부에 따라 DTM의 희소성이 어떻게 달라지는가?"
+    ]
+  },
+  "revision": "d4e02170386f06a7b0a085d6744e6a5dd4690a26f8c28ea88ee1d9d0a0f6e862",
+  "source_fingerprint": "0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220",
+  "sources": [
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-1",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / README / row 1",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-2",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / README / row 2",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-4",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / README / row 4",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-5",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / README / row 5",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-6",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / README / row 6",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-7",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / README / row 7",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-8",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / README / row 8",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-9",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / README / row 9",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-11",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / README / row 11",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-12",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / README / row 12",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-1",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 1",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-2",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 2",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-4",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 4",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-5",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 5",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-6",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 6",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-7",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 7",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-8",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 8",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-9",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 9",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-10",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 10",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-12",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 12",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-13",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 13",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-14",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 14",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-15",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 15",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-16",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 16",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-17",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 17",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-18",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 18",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-20",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 20",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-21",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 21",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-22",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 22",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-23",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 23",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-24",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 24",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-25",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 25",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-26",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 26",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-27",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 27",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-29",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 29",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-30",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 30",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-31",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 31",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-32",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Student_Design / row 32",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-1",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 1",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-2",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 2",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-4",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 4",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-5",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 5",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-6",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 6",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-7",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 7",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-8",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 8",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-9",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 9",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-10",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 10",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-12",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 12",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-13",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 13",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-14",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 14",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-15",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 15",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-16",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 16",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-17",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 17",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-18",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 18",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-20",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 20",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-22",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 22",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-23",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 23",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-24",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 24",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-25",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 25",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-26",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 26",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-27",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / EN_Example_Answer / row 27",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-1",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 1",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-2",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 2",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-4",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 4",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-5",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 5",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-6",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 6",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-7",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 7",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-8",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 8",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-9",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 9",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-10",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 10",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-12",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 12",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-13",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 13",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-14",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 14",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-15",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 15",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-16",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 16",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-17",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 17",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-18",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 18",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-20",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 20",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-21",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 21",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-22",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 22",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-23",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 23",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-24",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 24",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-25",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 25",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-26",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 26",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-27",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 27",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-29",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 29",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-30",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 30",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-31",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 31",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-32",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Student_Design / row 32",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-1",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 1",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-4",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 4",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-5",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 5",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-6",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 6",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-7",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 7",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-8",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 8",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-9",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 9",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-10",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 10",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-12",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 12",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-13",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 13",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-14",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 14",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-15",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 15",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-16",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 16",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-17",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 17",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-18",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 18",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-20",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 20",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-22",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 22",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-23",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 23",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-24",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 24",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-25",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 25",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-26",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 26",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    },
+    {
+      "id": "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-27",
+      "label": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 / KR_Example_Answer / row 27",
+      "path": "materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/snapshots/0a36947c4a40122869d79a50cb143694e49a000e39a1e0304e4dda6db3386220/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8--NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+    }
+  ],
+  "title": "NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본"
+}

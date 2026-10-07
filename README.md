@@ -26,7 +26,9 @@ Colab 노트북·강의 녹취·필기를 모아 한국어 공부 노트와 개�
 
 <!-- studybot:start -->
 
-아직 생성된 공부 노트가 없습니다.
+| 강의 | 공부 노트 | 원본 | 다운로드 |
+|---|---|---|---|
+| NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 | [보기](notes/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8.md) | [원본 목록](materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/manifest.json) | [ZIP](downloads/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8.zip?raw=true) |
 
 [개념 기억](memory/index.md) · [질문 기록](memory/questions.md)
 
