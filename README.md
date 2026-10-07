@@ -4,6 +4,12 @@ Colab 노트북·강의 녹취·필기를 모아 한국어 공부 노트와 개�
 
 [연결 설정](docs/SETUP.md) · [구현 계획](docs/PLAN.md) · [공식 근거](docs/RESEARCH.md) · [테스트](https://github.com/cjdwneo2021-netizen/sys/actions/workflows/check.yml)
 
+## 현재 연결 상태와 운영 기록
+
+**2026-10-07 기준:** Google Cloud·Drive 인증, GitHub Actions 활성화, Gemini API 키 등록을 완료했고 [첫 수동 실행](https://github.com/cjdwneo2021-netizen/sys/actions/runs/37627535829)이 성공했습니다. 모델은 `gemini-3.1-flash-lite`이며 AI Studio에서 해당 프로젝트의 무료 등급을 확인했습니다. 빈 폴더로 실행해 수집 0건·노트 0건이었으며 실제 모델 호출은 아직 미검증입니다. 저장소는 사용자 선택에 따라 공개로 유지합니다.
+
+서비스별 역할, 실제 등록한 설정값, 무료 호출 한도, MCP·브라우저 도구 사용 내역, 검증 결과와 남은 작업은 **[진행 현황과 운영 안내](docs/PROGRESS.md)**에 정리했습니다. 설정값이 바뀌면 이 문서도 함께 갱신하세요.
+
 [Colab에서 연결 설정 열기](https://colab.research.google.com/github/cjdwneo2021-netizen/sys/blob/main/colab/setup.ipynb) · [강의 저장 템플릿 열기](https://colab.research.google.com/github/cjdwneo2021-netizen/sys/blob/main/colab/lecture-template.ipynb)
 
 ## 사용 방법
