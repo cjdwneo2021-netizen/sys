@@ -1,0 +1,25 @@
+{
+  "concepts": [
+    {
+      "explanation": "문서와 단어의 관계를 행렬로 표현한 것으로, 각 행은 문서를, 열은 단어를 나타내며 교차점에는 단어의 등장 빈도가 기록됩니다.",
+      "name": "DTM (Document-Term Matrix)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-20",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-22"
+      ]
+    },
+    {
+      "explanation": "단어의 변형(finds, finds 등)을 기본 형태(find)로 통합하여 동일한 의미의 단어로 처리하는 과정입니다.",
+      "name": "Lemmatization (표제어화)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-10"
+      ]
+    }
+  ],
+  "markdown": "## NLP 전처리 설계 및 DTM 구성\n\n### 1. 전처리 단계 예시\n자연어 처리에서 데이터의 일관성을 확보하기 위해 다음의 단계를 거쳐 텍스트를 정제할 수 있습니다.\n\n| 단계 | 내용 | 목적 |\n| --- | --- | --- |\n| Lowercase | 모든 문자를 소문자로 변환 | 대소문자 중복 방지 |\n| Punctuation Removal | 문장부호 제거 및 공백 정리 | 일관된 비교 |\n| Tokenization | 공백 기준 단어 분리 | 단어 단위 분석 |\n| Stopword Removal | 불용어(is, the 등) 제거 | 핵심어 강조 |\n| Lemmatization | 표제어화(finds -> find 등) | 변형어 통합 |\n\n### 2. DTM(Document-Term Matrix) 구성\n위의 과정을 통해 정제된 토큰들을 바탕으로 문서별 단어 빈도를 행렬로 나타낸 것입니다. 예를 들어 E1 문서의 'data' 빈도는 1.0으로 나타나며, 전처리를 거치지 않았을 때보다 특징 추출이 명확해집니다.",
+  "questions": [
+    "내가 고른 전처리 단계 중 vocabulary 크기에 가장 큰 영향을 준 단계는 무엇인가?",
+    "내가 변수열로 선택하지 않은 단어 중, 추가하면 유용할 것 같은 단어는 무엇인가?",
+    "불용어 제거/표제어화 여부에 따라 DTM이 어떻게 달라졌는가?"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "concepts": [
+    {
+      "explanation": "텍스트 데이터에서 불필요한 요소를 제거하고 분석 가능한 단위로 만드는 과정. 특수문자 제거, 공백 정리, 토큰화 등이 포함된다.",
+      "name": "전처리 단계(Preprocessing Step)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-5",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-6"
+      ]
+    },
+    {
+      "explanation": "각 문서에 등장하는 단어의 빈도를 행과 열로 나타낸 행렬. 모델 학습을 위해 비정형 텍스트를 수치화하는 기초적인 방법이다.",
+      "name": "문서-단어 행렬(DTM)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-20",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-21"
+      ]
+    }
+  ],
+  "markdown": "### NLP 전처리 단계 설계 및 DTM 구성\n\n강의에서는 텍스트 데이터를 분석하기 위한 전처리 과정과 문서-단어 행렬(Document-Term Matrix, DTM)을 수동으로 구성해보는 실습을 진행합니다.\n\n#### 1. 전처리 단계 설계\n- 단계별 전처리를 통해 데이터의 정제(특수문자 제거, 공백 정리 등)와 토큰화를 수행합니다.\n- 조사/어미의 정리 및 기본형 통일이 DTM 구성에 미치는 영향을 파악합니다.\n\n#### 2. DTM 구성\n- 원본 텍스트를 전처리한 결과를 바탕으로 가나다 순으로 단어를 식별하여 행렬을 작성합니다.\n- 예시 데이터: \"좋은 데이터는 좋은 모델을 만든다.\"\n\n#### 3. 고찰\n- 전처리 규칙이 단어 사전(Vocabulary)의 크기와 정보 손실에 미치는 영향을 고민합니다.",
+  "questions": [
+    "내가 고른 전처리 단계 중 vocabulary 크기에 가장 큰 영향을 준 단계는 무엇인가?",
+    "‘데이터’, ‘데이터는’, ‘데이터를’를 어떻게 처리했는가? 그 이유는 무엇인가?",
+    "조사·어미를 정리하지 않았으면 DTM이 어떻게 달라졌을까?"
+  ]
+}

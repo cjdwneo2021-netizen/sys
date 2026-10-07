@@ -1,0 +1,31 @@
+{
+  "concepts": [
+    {
+      "explanation": "텍스트 데이터에서 조사나 불필요한 접미사를 제거하여 동일한 의미의 단어를 하나로 통합하는 과정입니다.",
+      "name": "형태 단순화",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-8"
+      ]
+    },
+    {
+      "explanation": "활용된 형태의 단어들을 사전적 기본형으로 변환하여 데이터의 변형어를 통합합니다.",
+      "name": "기본형 정리",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-9"
+      ]
+    },
+    {
+      "explanation": "문서-단어 행렬로, 행은 문서 ID, 열은 추출된 토큰으로 구성하여 문서 내 단어의 등장 빈도를 표로 나타낸 것입니다.",
+      "name": "DTM (Document-Term Matrix)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-10",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-22"
+      ]
+    }
+  ],
+  "markdown": "### NLP 전처리 및 DTM 구성 과정\n\n#### 1. 전처리 단계 설계\n- **Step 3 (형태 단순화)**: '데이터를' → '데이터', '분석은' → '분석'과 같이 조사를 제거하여 같은 개념을 통합합니다 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-8].\n- **Step 4 (기본형 정리)**: '찾는다' → '찾다', '만든다' → '만들다' 등 어미 변화를 기본형으로 통일합니다 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-9].\n- **Step 5 (최종 토큰 확정)**: 핵심 의미 중심으로 토큰을 정리하여 DTM 생성의 변수로 활용합니다 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-10].\n\n#### 2. 예시 DTM 구성\n문서(K1~K5)별 전처리된 토큰들의 출현 빈도를 기반으로 DTM(Document-Term Matrix)을 구성합니다 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-23, row-27].",
+  "questions": [
+    "형태 단순화와 기본형 정리 과정에서 의미가 완전히 동일하지 않은 단어들을 어디까지 통합해야 하는지에 대한 기준은 무엇인가?",
+    "DTM 구성 시 단어 빈도가 0인 경우와 2 이상인 경우를 처리하는 알고리즘적 정교화 방안은 무엇인가?"
+  ]
+}

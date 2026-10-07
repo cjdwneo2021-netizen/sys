@@ -1,0 +1,47 @@
+{
+  "concepts": [
+    {
+      "explanation": "텍스트 데이터를 분석 가능한 형태로 변환하기 위해 적용하는 일련의 과정(소문자화, 구두점 제거, 토큰화, 불용어 제거, 표제어 추출 등)을 정의하는 단계입니다.",
+      "name": "전처리 단계 설계",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-6",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-4"
+      ]
+    },
+    {
+      "explanation": "문서와 단어의 관계를 행렬로 표현한 것으로, 각 행은 문서를, 열은 단어를 나타내며 교차점에는 단어의 등장 빈도가 기록됩니다. 비정형 텍스트를 수치화하는 기초적인 방법입니다.",
+      "name": "DTM (Document-Term Matrix)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-2",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-20",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-20"
+      ]
+    },
+    {
+      "explanation": "단어의 변형(finds, finds 등)을 기본 형태(find)로 통합하여 동일한 의미의 단어로 처리하는 과정입니다.",
+      "name": "Lemmatization (표제어화)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-10"
+      ]
+    },
+    {
+      "explanation": "텍스트 데이터에서 불필요한 요소를 제거하고 분석 가능한 단위로 만드는 과정. 특수문자 제거, 공백 정리, 토큰화 등이 포함됩니다.",
+      "name": "전처리 단계(Preprocessing Step)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-5",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-6"
+      ]
+    }
+  ],
+  "markdown": "## NLP 전처리 설계 및 DTM 구성 실습 요약\n\n### 1. 전처리 단계 설계 및 구성\n자연어 처리의 기초로서 텍스트 데이터를 분석 가능한 형태로 정제하는 과정입니다. 주요 단계로는 소문자화(Lowercase), 문장부호 제거(Punctuation Removal), 토큰화(Tokenization), 불용어 제거(Stopword Removal), 표제어화(Lemmatization) 등이 있습니다. 각 단계는 데이터의 일관성을 확보하고 분석의 효율성을 높이는 데 기여합니다.\n\n### 2. DTM (Document-Term Matrix)\n문서-단어 행렬로, 행은 문서, 열은 단어를 나타내며 각 셀은 해당 단어의 빈도를 기록합니다. 수동으로 구성해봄으로써 단어 사전(Vocabulary)의 크기 변화와 전처리 규칙에 따른 정보 손실의 관계를 이해합니다.\n\n### 3. 주요 실습 내용\n- 원본 텍스트에 대한 단계별 전처리 결과 예측 및 수행.\n- 전처리 여부에 따른 DTM의 차이점 확인(예: 조사/어미 처리 방식).\n- 데이터의 특성(예: '데이터' vs '데이터는' 등)에 따른 분석 고찰.",
+  "questions": [
+    "각 전처리 단계의 적용 순서가 DTM 결과에 미치는 영향은 무엇인가?",
+    "최종 토큰에서 어떤 기준으로 DTM 변수(열)를 선정하는 것이 효율적인가?",
+    "실습 시트의 Step 2와 Step 3에서 단계별 결과 예측이 엇갈리는 경우 어떻게 검증해야 하는가?",
+    "내가 고른 전처리 단계 중 vocabulary 크기에 가장 큰 영향을 준 단계는 무엇인가?",
+    "내가 변수열로 선택하지 않은 단어 중, 추가하면 유용할 것 같은 단어는 무엇인가?",
+    "불용어 제거/표제어화 여부에 따라 DTM이 어떻게 달라졌는가?",
+    "‘데이터’, ‘데이터는’, ‘데이터를’를 어떻게 처리했는가? 그 이유는 무엇인가?",
+    "조사·어미를 정리하지 않았으면 DTM이 어떻게 달라졌을까?"
+  ]
+}

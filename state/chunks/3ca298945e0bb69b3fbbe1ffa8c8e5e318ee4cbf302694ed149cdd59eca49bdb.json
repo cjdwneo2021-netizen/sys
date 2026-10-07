@@ -1,0 +1,26 @@
+{
+  "concepts": [
+    {
+      "explanation": "텍스트 데이터를 분석 가능한 형태로 변환하기 위해 적용하는 일련의 과정(소문자화, 구두점 제거, 토큰화, 불용어 제거, 표제어 추출 등)을 정의하는 단계입니다.",
+      "name": "전처리 단계 설계",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-6",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-4"
+      ]
+    },
+    {
+      "explanation": "문서-단어 행렬로, 각 행은 문서를 나타내고 각 열은 특정 단어(변수)를 나타내며, 해당 문서에서 단어가 등장한 빈도를 값으로 가지는 행렬입니다.",
+      "name": "DTM (Document-Term Matrix)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-2",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-20"
+      ]
+    }
+  ],
+  "markdown": "## NLP 전처리 설계 및 DTM 구성 실습\n\n본 강의는 자연어 처리(NLP)의 기초인 전처리 단계 설계와 문서-단어 행렬(DTM)을 직접 구성하는 실습을 다룹니다.\n\n### 권장 학습 흐름\n1. 전처리 단계 설계: 원본 텍스트에 적용할 단계(예: 소문자화, 불용어 제거 등)를 정의합니다.\n2. 단계별 결과 예측: 텍스트가 각 단계를 거쳐 어떻게 변하는지 추적합니다.\n3. DTM 변수 선정: 최종 토큰화된 단어 중 중요한 것을 선정하여 행렬 헤더로 작성합니다.\n4. 행렬 작성 및 검증: 문서별 단어 빈도를 기입하고 예시 정답과 비교합니다.\n\n### 실습 설계 예시 (EN_Student_Design)\n- 원본 텍스트: 'Data science is useful and fun!', 'Text mining finds useful data.', 등\n- 작업 내용: 전처리 단계별 결과 예측 및 DTM 직접 채우기",
+  "questions": [
+    "각 전처리 단계의 적용 순서가 DTM 결과에 미치는 영향은 무엇인가?",
+    "최종 토큰에서 어떤 기준으로 DTM 변수(열)를 선정하는 것이 효율적인가?",
+    "실습 시트의 Step 2와 Step 3에서 단계별 결과 예측이 엇갈리는 경우 어떻게 검증해야 하는가?"
+  ]
+}
