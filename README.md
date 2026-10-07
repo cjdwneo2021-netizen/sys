@@ -22,6 +22,8 @@ Colab 노트북·강의 녹취·필기를 모아 한국어 공부 노트와 개�
 
 아직 생성된 공부 노트가 없습니다.
 
+[개념 기억](memory/index.md) · [질문 기록](memory/questions.md)
+
 <!-- studybot:end -->
 
 ## 동작
