@@ -23,8 +23,10 @@ NOTE = {"markdown": "## 핵심 개념\n변수에 값을 저장한다. [f1:cell-1
 class FakeBackend:
     def __init__(self):
         self.calls = 0
+        self.prompts = []
     def generate(self, prompt):
         self.calls += 1
+        self.prompts.append(prompt)
         return copy.deepcopy(NOTE)
 
 class FakeDrive:
@@ -171,6 +173,43 @@ class PipelineTests(unittest.TestCase):
     def test_invented_source_rejected(self):
         with self.assertRaises(ValueError):
             validate(NOTE, {"other"})
+
+    def test_invented_markdown_source_rejected(self):
+        note = copy.deepcopy(NOTE)
+        note["markdown"] += " [SOURCE invented:row-1]"
+        with self.assertRaisesRegex(ValueError, "Markdown has invented"):
+            validate(note, {"f1:cell-1"})
+        note["markdown"] = "원본 예시 [SOURCE f1:cell-1]"
+        self.assertEqual(validate(note, {"f1:cell-1"}), note)
+
+    def test_final_prompt_uses_only_available_previous_memory(self):
+        self.import_lecture()
+        backend = FakeBackend()
+        generate_notes(self.config, Generator(self.config, backend))
+        self.assertIn("이전 기억이 없다", backend.prompts[-1])
+        write_json(self.root / "state/results/previous.json", {
+            "note": {"concepts": [{"name": "변수", "explanation": "파이썬 변수"}]}})
+        # Rebuild with a new prompt version, as an upgraded production pipeline does.
+        with patch("studybot.pipeline.PROMPT_VERSION", "test-new-version"):
+            generate_notes(self.config, Generator(self.config, backend))
+        self.assertIn("[이전 강의 previous]", backend.prompts[-1])
+        self.assertNotIn("이전 기억이 없다", backend.prompts[-1])
+
+    def test_prompt_upgrade_regenerates_then_resumes_without_extra_calls(self):
+        self.import_lecture()
+        backend = FakeBackend()
+        generate_notes(self.config, Generator(self.config, backend))
+        old_revision = read_json(self.root / "state/results/lecture.json")["revision"]
+        with patch("studybot.pipeline.PROMPT_VERSION", "test-new-version"):
+            limited = replace(self.config, max_calls=1)
+            with self.assertRaises(Deferred):
+                generate_notes(limited, Generator(limited, backend))
+            self.assertEqual(read_json(self.root / "state/results/lecture.json")["revision"], old_revision)
+            generate_notes(self.config, Generator(self.config, backend))
+            self.assertEqual(backend.calls, 4)
+            self.assertNotEqual(read_json(self.root / "state/results/lecture.json")["revision"], old_revision)
+            generate_notes(self.config, Generator(self.config, backend))
+            self.assertEqual(backend.calls, 4)
 
     def test_manual_readme_preserved(self):
         write_text(self.root / "README.md", "# My course\nManual introduction.\n")

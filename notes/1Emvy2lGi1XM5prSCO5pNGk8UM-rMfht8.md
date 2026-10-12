@@ -1,24 +1,100 @@
 # NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본
 
-## 공부 노트: NLP 전처리 단계 설계 및 DTM 구성
+## 공부 노트: NLP 전처리 단계 설계 및 DTM 직접 구성
 
-### 1. 강의 개요
-본 강의는 자연어 처리의 핵심인 전처리 설계와 DTM 구성을 학습합니다. 특히 텍스트 데이터를 분석 가능한 수치 행렬로 바꾸는 변환 과정을 직접 실습합니다.
+### 원본 자료와 실습 상태
 
-### 2. 학습 내용
-- 전처리 설계: 소문자화, 구두점 제거, 토큰화, 불용어 제거, 표제어 추출을 포함합니다. 특히 한국어 처리에 필수적인 '형태 단순화'와 '기본형 정리'를 다룹니다.
-- DTM 구성: 각 문서의 토큰 빈도를 행렬로 표현하여 비정형 데이터를 정형 데이터로 변환합니다.
+이 자료는 영어·한국어 문장에서 전처리 단계를 설계하고, 처리 결과에서 단어를 골라 문서-단어 행렬(DTM)을 직접 채우는 실습 시트다. 학생 설계 시트와 예시 답안 시트가 각각 제공된다. 학생 시트에는 원본 문장만 있고 단계·결과·DTM 답안은 미작성이다. 아래 내용은 제공된 예시 답안을 정리한 것이며 학생이 실습을 완료했다는 뜻은 아니다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-6] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-7] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-8] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-9] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-6] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-14] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-23] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-6] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-14] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-23]
 
-### 3. 이전 강의 참고
-- 자연어 데이터의 기초적인 수치화 방법론과 희소성(Sparsity)에 대한 개념을 복습합니다.
+원본의 권장 순서는 **단계 설계 → 단계별 결과 예측 → 최종 토큰에서 변수열 선정 → 문서별 빈도 기입 → 예시 답안과 비교**다. 예시 답안과 달라도 논리적으로 설명할 수 있으면 인정 가능하다고 명시돼 있다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-12] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-2] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-5] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-5]
 
-### 4. AI 보충 설명 및 분석
-- 전처리 단계의 설계는 DTM의 희소성에 큰 영향을 미칩니다. 조사 제거와 표제어 통합은 어휘 사전(Vocabulary) 크기를 줄여 분석 효율을 높이지만, 과도한 통합은 의미의 왜곡을 초래할 수 있습니다.
+### 1. 영어 전처리: 규칙과 실제 결과
 
-### 5. 복습 체크리스트
-- [ ] 전처리 단계별 데이터의 변화를 직접 추적했는가?
-- [ ] DTM 행렬의 행과 열이 의미하는 바를 설명할 수 있는가?
-- [ ] 표제어화와 단순 형태소 분석의 차이를 이해했는가?
+| 단계 | 예시 답안의 규칙 | 목적 |
+|---|---|---|
+| 1. 소문자화 | 모든 문자를 소문자로 통일 | Data/data가 분리되는 것을 방지 |
+| 2. 문장부호 제거 | 문장부호 제거와 공백 정리 | 같은 단어를 일관되게 비교 |
+| 3. 토큰화 | 공백 기준으로 분리 | 단어 단위 분석 |
+| 4. 불용어 제거 | is, and, the, from, a 제거 | 핵심어 강조 |
+| 5. 간단한 기본형 정리 | finds→find, learns→learn, makes→make | 변형어 통합 |
+
+출처: [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-6] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-7] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-8] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-9] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-10]
+
+E3의 원문은 `The model learns from data, data.`다. 예시 시트의 중간 결과는 `the model learns from data data`, 토큰화 결과는 `the | model | learns | from | data | data`, 불용어 제거와 기본형 정리 후 결과는 `model | learn | data | data`다. 같은 단어가 두 번 나온 사실은 유지한다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-16]
+
+| 문서 | 예시 답안 E열의 처리 결과 |
+|---|---|
+| E1 | data, science, useful, fun |
+| E2 | text, mining, find, useful, data |
+| E3 | model, learn, data, data |
+| E4 | python, r, analyze, text, data |
+| E5 | good, data, make, good, model |
+
+출처: [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-14] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-15] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-16] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-17] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-18]
+
+### 2. 한국어 전처리: 형태 통합과 기본형 정리
+
+한국어 예시는 **특수문자 제거·공백 정리 → 띄어쓰기 토큰화 → 형태 단순화 → 기본형 정리 → 최종 토큰 확정** 순서다. 형태 단순화의 예는 `데이터를→데이터`, `분석은→분석`이고 기본형 정리의 예는 `찾는다→찾다`, `만든다→만들다`다. 예시에서 사용하는 규칙을 먼저 정의하고 결과에 일관되게 적용하는 것이 실습의 핵심이다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-6] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-7] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-8] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-9] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-10]
+
+K3의 원문은 `모델은 데이터에서 학습하고, 데이터를 활용한다.`다. 정제 후 `모델은 데이터에서 학습하고 데이터를 활용한다`, 띄어쓰기 토큰화 후 `모델은 | 데이터에서 | 학습하고 | 데이터를 | 활용한다`, 예시 답안 E열의 처리 결과는 `모델 | 데이터 | 학습 | 데이터 | 활용`이다. `데이터에서`와 `데이터를`이 같은 변수 `데이터`로 합쳐져 빈도 2가 된다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-16] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-25]
+
+| 문서 | 예시 답안 E열의 처리 결과 |
+|---|---|
+| K1 | 데이터, 분석, 재미, 유용 |
+| K2 | 텍스트, 마이닝, 유용, 데이터, 찾다 |
+| K3 | 모델, 데이터, 학습, 데이터, 활용 |
+| K4 | 파이썬, R, 텍스트, 데이터, 분석 |
+| K5 | 좋다, 데이터, 좋다, 모델, 만들다 |
+
+출처: [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-14] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-15] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-16] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-17] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-18]
+
+### 3. DTM 직접 구성
+
+DTM의 행은 문서 ID, 열은 선정한 단어이며 셀은 해당 문서에서 그 단어가 등장한 횟수다. 학생 시트는 영어 변수명을 ABC순, 한국어 변수명을 가나다순으로 기입하도록 안내한다. 먼저 각 문서의 처리 토큰을 모아 중복 없는 변수 목록을 정한 다음, 모든 문서를 같은 열 순서로 세어야 한다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-21] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-21] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-22] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-25] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-22] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-25]
+
+영어 예시의 전체 변수열은 `analyze, data, find, fun, good, learn, make, mining, model, python, r, science, text, useful`의 14개다. 한국어 예시도 `R, 데이터, 모델, 만들다, 마이닝, 분석, 유용, 재미, 좋다, 찾다, 텍스트, 파이썬, 학습, 활용`의 14개다. 두 예시 모두 5개 문서로 구성된 5×14 행렬이다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-22] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-23] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-27] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-22] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-23] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-27]
+
+아래는 원본 영어 DTM에서 5개 열만 발췌한 표다. 전체 변수 목록을 이 5개로 제한한 것은 아니다.
+
+| 문서 | data | good | learn | model | text |
+|---|---:|---:|---:|---:|---:|
+| E1 | 1 | 0 | 0 | 0 | 0 |
+| E2 | 1 | 0 | 0 | 0 | 1 |
+| E3 | 2 | 0 | 1 | 1 | 0 |
+| E4 | 1 | 0 | 0 | 0 | 1 |
+| E5 | 1 | 2 | 0 | 1 | 0 |
+
+출처: [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-22] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-23] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-24] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-25] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-26] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-27]
+
+E3의 `data=2`와 E5의 `good=2`는 등장 여부만 기록하는 0/1 값이 아니라 반복 횟수다. 한국어 예시도 K3의 `데이터=2`, K5의 `좋다=2`다. 단어가 없으면 0을 기입한다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-25] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-27] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-25] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-27]
+
+### 4. 원본에서 확인할 누락과 표기
+
+- 영어 예시 C열 헤더는 `Step 1 결과`인데 실제 문자열에는 소문자화뿐 아니라 문장부호 제거도 반영돼 있다. 위 설명은 셀에 저장된 결과를 그대로 사용했다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-13] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-14] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-16]
+- 한국어 예시 E열 헤더는 `Step 3 결과 또는 토큰`인데 `찾다`, `만들다` 등 기본형 정리 결과도 포함한다. Step 3만의 독립적인 결과로 단정할 수 없다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-13] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-15] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-18]
+- 두 예시 시트의 `최종 토큰` F열은 비어 있다. 위 토큰 표는 E열의 저장된 결과를 정리했으며 빈 F열을 채운 것으로 표현하지 않았다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-13] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-14] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-18] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-13] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-14] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-18]
+
+### 5. 원본의 생각해보기
+
+1. 내가 고른 전처리 단계 중 vocabulary 크기에 가장 큰 영향을 준 단계는 무엇인가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-30] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-30]
+2. 내가 변수열로 선택하지 않은 단어 중, 추가하면 유용할 것 같은 단어는 무엇인가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-31]
+3. 불용어 제거/표제어화 여부에 따라 DTM이 어떻게 달라졌는가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-32]
+4. ‘데이터’, ‘데이터는’, ‘데이터를’를 어떻게 처리했는가? 그 이유는 무엇인가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-31]
+5. 조사·어미를 정리하지 않았으면 DTM이 어떻게 달라졌을까? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-32]
+
+### 6. AI 복습 제안
+
+원본의 반복 사례를 이용해 E3의 `data`나 K3의 `데이터`를 1로 적었을 때 왜 빈도 정보가 사라지는지 설명해 보자. 원본 토큰 목록에서 직접 세어 DTM 셀과 비교하면 변수 누락이나 중복 제거 실수를 찾을 수 있다. 이 검산 방법은 AI의 제안이며 원본에 추가로 작성된 학생 답안은 아니다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-16] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-25] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-16] [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-25]
+
+### 7. 복습 체크리스트
+
+- [ ] 각 전처리 규칙과 실제 변환 예시를 설명할 수 있다.
+- [ ] 미작성 학생 시트와 제공된 예시 답안을 구분할 수 있다.
+- [ ] 토큰 목록에서 중복 없는 변수열을 선정할 수 있다.
+- [ ] 빈도 0·1·2를 구분하고 E3와 K3의 반복을 직접 셀 수 있다.
+- [ ] 빈 최종 토큰 열과 단계 표기 차이를 확인했다.
+- [ ] 예시와 다른 규칙을 선택했다면 그 이유와 DTM 변화도 설명할 수 있다.
+
 
 ## 원본 근거
 

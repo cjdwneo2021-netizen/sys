@@ -26,6 +26,7 @@ jobs:
       MODEL_NAME: ${{ vars.MODEL_NAME }}
       MAX_MODEL_CALLS: ${{ vars.MAX_MODEL_CALLS || '8' }}
       MAX_DAILY_MODEL_CALLS: ${{ vars.MAX_DAILY_MODEL_CALLS || '32' }}
+      MODEL_DEADLINE_SECONDS: ${{ vars.MODEL_DEADLINE_SECONDS || '1500' }}
       IDLE_SECONDS: ${{ inputs.idle_seconds || '2700' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -62,10 +63,11 @@ jobs:
           MODEL_BASE_URL: ${{ vars.MODEL_BASE_URL }}
         run: studybot build
       - name: Save results and resumable checkpoints
-        if: ${{ !cancelled() && steps.sync.outcome == 'success' }}
+        if: ${{ !cancelled() && (steps.sync.outcome == 'success' || steps.sync.outcome == 'failure') }}
         env:
           TARGET_BRANCH: ${{ github.event.repository.default_branch }}
         run: |
+          studybot render
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           for path in materials notes memory state downloads README.md; do

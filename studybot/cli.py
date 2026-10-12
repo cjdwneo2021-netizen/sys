@@ -3,7 +3,8 @@ import sys
 
 from .config import Config
 from .drive import Drive, synchronize
-from .model import Deferred
+from .model import Deferred, Generator
+from .monitoring import record_operation
 from .pipeline import generate_notes
 from .render import render
 
@@ -17,11 +18,27 @@ def main():
         if args.command == "sync":
             if not config.folder_id:
                 raise ValueError("Set DRIVE_FOLDER_ID")
-            print(f"Imported {len(synchronize(config, Drive()))} lecture(s)")
-        elif args.command == "build":
+            status, count = "failed", None
             try:
-                print(f"Generated {len(generate_notes(config))} note(s)")
+                count = len(synchronize(config, Drive()))
+                status = "completed"
+                print(f"Imported {count} lecture(s)")
             finally:
+                record_operation(config, "sync", status, count)
+                render(config.root)
+        elif args.command == "build":
+            generator = Generator(config)
+            status, count = "failed", None
+            try:
+                count = len(generate_notes(config, generator))
+                status = "completed"
+                print(f"Generated {count} note(s)")
+            except Deferred:
+                status = "deferred"
+                raise
+            finally:
+                generator.finish(status, count)
+                record_operation(config, "build", status, count)
                 render(config.root)
         elif args.command == "render":
             render(config.root)

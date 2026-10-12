@@ -4,7 +4,7 @@ from zipfile import ZipFile
 
 from .storage import contained
 
-PROMPT_VERSION = "lecture-v1"
+PROMPT_VERSION = "lecture-v2"
 XLSX_MIME = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
 def spreadsheet_rows(path):
