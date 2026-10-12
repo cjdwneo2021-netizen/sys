@@ -70,7 +70,7 @@ def generate_notes(config, generator=None):
                 if len(group) == 1:
                     merged.extend(group)
                     continue
-                body = json.dumps(group, ensure_ascii=False)
+                body = json.dumps(group, ensure_ascii=False, sort_keys=True)
                 prompt = ("부분 노트를 중복 없이 합쳐라. 구체적인 실습의 입력, 변환 규칙, 단계별 결과, "
                           "표의 열 이름과 대표 행 수치를 일반적인 개요로 축약하지 말고 보존하라. "
                           "주요 개념, 원본 질문, 빈 답안과 예시의 구분, 불확실성, "
@@ -78,7 +78,7 @@ def generate_notes(config, generator=None):
                 merged.append(generator.request({**base, "stage": "reduce", "level": level, "body": body},
                                                 prompt, allowed))
             partials, level = merged, level + 1
-        body = json.dumps(partials, ensure_ascii=False)
+        body = json.dumps(partials, ensure_ascii=False, sort_keys=True)
         memory_instruction = (
             "제공된 이전 기억에서 실제로 관련된 내용만 '이전 강의 참고'로 표시하고 강의 ID를 붙여라. "
             if context["memory"].strip() else

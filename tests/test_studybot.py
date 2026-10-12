@@ -157,6 +157,22 @@ class PipelineTests(unittest.TestCase):
         generate_notes(config, Generator(config, backend))
         self.assertEqual(backend.calls, 2)
 
+    def test_resume_reuses_merge_despite_json_key_order(self):
+        drive = self.import_lecture()
+        manifest = read_json(self.root / "materials/lecture/manifest.json")
+        drive.notebook["cells"][0]["source"] = ["x = 3\n" * 3300]
+        write_json(self.root / manifest["files"][0]["path"], drive.notebook)
+        sources = extract_sources(self.root, manifest)
+        self.assertEqual(len(chunks(sources, self.config.chunk_chars)), 4)
+        backend = FakeBackend()
+        limited = replace(self.config, max_calls=5)
+        with self.assertRaises(Deferred):
+            generate_notes(limited, Generator(limited, backend))
+        # Four extracts plus one merge are saved; only the final call remains.
+        self.assertEqual(backend.calls, 5)
+        self.assertEqual(generate_notes(self.config, Generator(self.config, backend)), ["lecture"])
+        self.assertEqual(backend.calls, 6)
+
     def test_no_change_no_api_and_deterministic_render(self):
         self.import_lecture()
         backend = FakeBackend()
