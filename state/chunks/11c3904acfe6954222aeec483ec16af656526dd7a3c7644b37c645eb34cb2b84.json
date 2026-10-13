@@ -1,0 +1,24 @@
+{
+  "concepts": [
+    {
+      "explanation": "텍스트 분석의 품질을 높이기 위해 특수문자 제거, 띄어쓰기 토큰화 등을 수행하는 과정 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-5]",
+      "name": "전처리(Preprocessing)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-5"
+      ]
+    },
+    {
+      "explanation": "문서별로 등장하는 단어의 빈도를 행렬로 표현한 것. 행은 문서 ID, 열은 식별된 단어를 나타냄 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-21]",
+      "name": "DTM (Document-Term Matrix)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-21"
+      ]
+    }
+  ],
+  "markdown": "### NLP 전처리 및 DTM 구성 학습 노트\n\n#### 1. 전처리 단계 설계\n- **목표**: 텍스트 데이터를 정제하여 문서-단어 행렬(DTM)을 구성함 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-1]\n- **설계 항목**: 전처리 단계 설계, 단계별 결과 예측, DTM 직접 구성으로 구성됨 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-2]\n- **예시 설계 단계**:\n  - Step 1 (특수문자 제거): 문장부호 제거 및 공백 정리 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-6]\n  - Step 2 (토큰화): 띄어쓰기 기준 분리 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-7]\n\n#### 2. DTM(문서-단어 행렬) 구성\n- **방법**: 식별된 단어를 가나다순으로 배치하여 각 문서(K1~K5)별 등장 빈도를 기입함 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-21]\n- **예시 행렬 데이터 (K5 행)**:\n  - K5 문서(원본: \"좋은 데이터는 좋은 모델을 만든다.\")의 단어 빈도 예시 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-27]\n  - 빈도 값: B27(0.0), C27(1.0), D27(0.0), E27(0.0), F27(2.0), G27(0.0), H27(1.0), I27(0.0), J27(1.0), K27(0.0), L27(0.0), M27(0.0), N27(0.0), O27(0.0) [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-27]",
+  "questions": [
+    "내가 고른 전처리 단계 중 vocabulary 크기에 가장 큰 영향을 준 단계는 무엇인가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-30]",
+    "‘데이터’, ‘데이터는’, ‘데이터를’를 어떻게 처리했는가? 그 이유는 무엇인가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-31]",
+    "조사·어미를 정리하지 않았으면 DTM이 어떻게 달라졌을까? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-32]"
+  ]
+}

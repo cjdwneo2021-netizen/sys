@@ -1,0 +1,32 @@
+{
+  "concepts": [
+    {
+      "explanation": "텍스트 분석의 품질을 높이기 위해 lowercase, punctuation removal, whitespace cleanup, tokenization, stopword removal, lemmatization/stemming 등을 단계별로 구성하는 작업 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-5].",
+      "name": "전처리 단계 설계",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-5"
+      ]
+    },
+    {
+      "explanation": "각 문서를 행(row)으로, 추출된 주요 단어를 열(column)로 배치하고, 문서 내 단어의 등장 빈도를 기록하는 행렬 구조 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-2, 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-21, 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-22, 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-21].",
+      "name": "DTM (문서-단어 행렬)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-2",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-21",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-22",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-21"
+      ]
+    }
+  ],
+  "markdown": "### NLP 전처리 및 DTM 구성 학습\n\n이 실습은 텍스트 데이터를 전처리하고 문서-단어 행렬(DTM)을 직접 설계하는 과정을 다룹니다 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-1].\n\n#### 1. 권장 수업 흐름 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-11]\n1. 원본 텍스트에 적용할 전처리 단계 설계 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-12]\n2. 단계별 결과(정제, 토큰화, 최종 토큰) 예측 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-12]\n3. 최종 토큰 기반 DTM 변수(열) 헤더 선정 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-12]\n4. 각 문서별 단어 빈도 입력 및 DTM 완성 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-12]\n\n#### 2. 전처리 단계 설계 상세\n| 단계 | 단계 이름 | 적용 규칙/설명 | 이유 |\n| :--- | :--- | :--- | :--- |\n| Step 1 | Lowercase | 모든 문자를 소문자로 통일 | Data/data의 중복 분리 방지 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-6] |\n| Step 2 | Punctuation removal | 문장부호 제거, 공백 정리 | 같은 단어를 일관되게 비교 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-7] |\n| Step 3 | Tokenization | 공백 기준으로 분리 | 단어 단위 분석 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-8] |\n| Step 4 | Stopword removal | is, and, the, from, a 제거 | 핵심어 강조 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-9] |\n| Step 5 | Simple lemmatization | finds→find, learns→learn 등 | 변형어 통합 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-10] |\n\n#### 3. 실습 데이터 결과 예시\n- **단계별 결과(E1, E3)**: E1('Data science is useful and fun!') → 'data science useful fun' [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-14]; E3('The model learns from data, data.') → 'model learn data data' [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-16].\n- **DTM 구성(E1, E3)**: E1(analyze:0.0, data:1.0, find:0.0, fun:1.0) [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-23]; E3(analyze:0.0, data:2.0, find:0.0, fun:0.0) [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-25].\n- **K5 행 데이터 예시**: K5 문서('좋은 데이터는 좋은 모델을 만든다.') 빈도 값 B27(0.0)부터 O27(0.0)까지 기입 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-27].",
+  "questions": [
+    "어떤 전처리 단계가 분석 성능에 가장 큰 영향을 미치는가?",
+    "DTM의 열(변수)을 선정할 때 불필요한 단어를 걸러내는 기준은 무엇인가?",
+    "입력된 예시 외에 새로운 텍스트가 추가될 경우 기존 DTM 구조에 어떤 변화가 필요한가?",
+    "내가 고른 전처리 단계 중 vocabulary 크기에 가장 큰 영향을 준 단계는 무엇인가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-30]",
+    "내가 변수열로 선택하지 않은 단어 중, 추가하면 유용할 것 같은 단어는 무엇인가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-31]",
+    "불용어 제거/표제어화 여부에 따라 DTM이 어떻게 달라졌는가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-32]",
+    "‘데이터’, ‘데이터는’, ‘데이터를’를 어떻게 처리했는가? 그 이유는 무엇인가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-31]",
+    "조사·어미를 정리하지 않았으면 DTM이 어떻게 달라졌을까? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-32]"
+  ]
+}

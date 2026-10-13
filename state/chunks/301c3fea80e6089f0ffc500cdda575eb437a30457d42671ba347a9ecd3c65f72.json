@@ -1,0 +1,49 @@
+{
+  "concepts": [
+    {
+      "explanation": "텍스트 분석의 품질을 높이기 위해 lowercase, punctuation removal, whitespace cleanup, tokenization, stopword removal, lemmatization/stemming 등을 단계별로 구성하는 작업 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-5].",
+      "name": "전처리 단계 설계",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-5"
+      ]
+    },
+    {
+      "explanation": "각 문서를 행으로, 추출된 주요 단어를 열로 배치하고, 문서 내 단어의 등장 빈도를 기록하는 행렬 구조 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-2, 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-21, 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-22, 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-21, 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-22].",
+      "name": "DTM (문서-단어 행렬)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-2",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-21",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-22",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-21",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-22"
+      ]
+    },
+    {
+      "explanation": "조사 등을 제거하여 유사한 개념을 하나의 토큰으로 통합하는 과정입니다 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-8].",
+      "name": "형태 단순화",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-8"
+      ]
+    },
+    {
+      "explanation": "용언의 활용형을 기본형으로 변환하여 어휘의 변형을 통일하는 과정입니다 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-9].",
+      "name": "기본형 정리",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-9"
+      ]
+    }
+  ],
+  "markdown": "### NLP 전처리 및 DTM 구성 학습\n\n이 실습은 텍스트 데이터를 전처리하고 문서-단어 행렬(DTM)을 직접 설계하는 과정을 다룹니다 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-1].\n\n#### 1. 전처리 단계 설계 상세\n| 단계 | 단계 이름 | 적용 규칙/설명 | 이유 |\n| :--- | :--- | :--- | :--- |\n| Step 1 | Lowercase | 모든 문자를 소문자로 통일 | Data/data의 중복 분리 방지 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-6] |\n| Step 2 | Punctuation removal | 문장부호 제거, 공백 정리 | 같은 단어를 일관되게 비교 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-3:row-7] |\n| Step 3 | 형태 단순화 | 데이터를→데이터, 분석은→분석 | 같은 개념 통합 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-8] |\n| Step 4 | 기본형 정리 | 찾는다→찾다, 만든다→만들다 | 변형어 통합 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-9] |\n| Step 5 | 최종 토큰 확정 | 핵심 의미 중심으로 토큰 정리 | DTM용 변수 추출 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-10] |\n\n#### 2. DTM(Document-Term Matrix) 예시 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-20]\n| 문서 ID | 데이터 | 분석 | 모델 | 좋다 | 텍스트 | ... |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| K1 | 1.0 | 1.0 | 0.0 | 0.0 | 0.0 | ... |\n| K5 | 1.0 | 0.0 | 1.0 | 2.0 | 0.0 | ... |\n\n#### 3. AI 보충 설명\n- DTM 구성 시 단어 빈도 0.0은 해당 문서에 특정 단어가 포함되지 않았음을 의미합니다 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-23].\n- 전처리 단계(불용어 제거, 표제어화 등)는 분석의 어휘 공간(vocabulary) 크기를 결정합니다 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-30].",
+  "questions": [
+    "어떤 전처리 단계가 분석 성능에 가장 큰 영향을 미치는가?",
+    "DTM의 열(변수)을 선정할 때 불필요한 단어를 걸러내는 기준은 무엇인가?",
+    "입력된 예시 외에 새로운 텍스트가 추가될 경우 기존 DTM 구조에 어떤 변화가 필요한가?",
+    "내가 고른 전처리 단계 중 vocabulary 크기에 가장 큰 영향을 준 단계는 무엇인가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-30]",
+    "내가 변수열로 선택하지 않은 단어 중, 추가하면 유용할 것 같은 단어는 무엇인가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-31]",
+    "불용어 제거/표제어화 여부에 따라 DTM이 어떻게 달라졌는가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-32]",
+    "‘데이터’, ‘데이터는’, ‘데이터를’를 어떻게 처리했는가? 그 이유는 무엇인가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-31]",
+    "조사·어미를 정리하지 않았으면 DTM이 어떻게 달라졌을까? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-4:row-32]",
+    "Step 5에서 최종 토큰 확정 시, 어떤 기준으로 핵심 의미를 판단하는가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-10]",
+    "DTM 구성 시 단어 빈도수가 0.0으로 표기되는 행렬값의 의미는 무엇인가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-23]"
+  ]
+}

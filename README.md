@@ -30,17 +30,17 @@ Colab 노트북·강의 녹취·필기를 모아 한국어 공부 노트와 개�
 
 | 확인 항목 | 기록 |
 |---|---|
-| 기준 시각 (UTC) | 2026-10-12T19:00:43+00:00 |
+| 기준 시각 (UTC) | 2026-10-13T01:19:52+00:00 |
 | 설정 출처 | 최근 실행에서 저장한 설정 |
 | 모델 | gemini / gemini-3.1-flash-lite |
-| 기준일 호출 시도 (2026-10-12 UTC) | 1 / 32회 |
-| 기준일 남은 자체 일일 예산 | 31회 |
+| 기준일 호출 시도 (2026-10-13 UTC) | 6 / 32회 |
+| 기준일 남은 자체 일일 예산 | 26회 |
 | 실행당 자체 호출 한도 | 8회 |
-| 마지막 build 호출 | 시도 1 · 응답 검증 완료 0 · 오류 1 · 캐시 재사용 0회 |
-| 마지막 자료 수집 | 완료 · 1건 · 2026-10-12T19:00:25+00:00 · [실행 로그](https://github.com/cjdwneo2021-netizen/sys/actions/runs/38294685651) |
-| 마지막 노트 생성 | 실패 · 2026-10-12T19:00:43+00:00 · [실행 로그](https://github.com/cjdwneo2021-netizen/sys/actions/runs/38294685651) |
+| 마지막 build 호출 | 시도 6 · 응답 검증 완료 6 · 오류 0 · 캐시 재사용 0회 |
+| 마지막 자료 수집 | 완료 · 0건 · 2026-10-13T01:19:24+00:00 · [실행 로그](https://github.com/cjdwneo2021-netizen/sys/actions/runs/38331550227) |
+| 마지막 노트 생성 | 완료 · 1건 · 2026-10-13T01:19:52+00:00 · [실행 로그](https://github.com/cjdwneo2021-netizen/sys/actions/runs/38331550227) |
 | 마지막 build 재개 대기 사유 | 해당 없음 |
-| 자료 처리 | 수집된 자료 1건 · 생성/갱신 대기 1건 · 안정성 관찰 대기 0건 |
+| 자료 처리 | 수집된 자료 1건 · 생성/갱신 대기 0건 · 안정성 관찰 대기 0건 |
 | 생성 결과 | 노트 1건 · 개념 4개 · ZIP 1개 |
 | 안정 대기 / 모델 처리 시간 한도 | 2700초 / 1500초 |
 | 토큰·실제 요금·제공업체 잔여 한도 | 미수집 · [AI Studio](https://aistudio.google.com/usage)에서 확인 |
@@ -49,6 +49,7 @@ Colab 노트북·강의 녹취·필기를 모아 한국어 공부 노트와 개�
 
 | 날짜 | 시도 | 응답 검증 완료 | 오류 | 결과 미확인 |
 |---|---:|---:|---:|---:|
+| 2026-10-13 | 6 | 6 | 0 | 0 |
 | 2026-10-12 | 1 | 0 | 1 | 0 |
 | 2026-10-07 | 8 | 0 | 0 | 8 |
 
@@ -64,7 +65,7 @@ Colab 노트북·강의 녹취·필기를 모아 한국어 공부 노트와 개�
 
 | 강의 | 공부 노트 | 원본 | 다운로드 |
 |---|---|---|---|
-| NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 | [업데이트 대기](notes/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8.md) | [원본 목록](materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/manifest.json) | [ZIP](downloads/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8.zip?raw=true) |
+| NLP_전처리단계설계_및_DTM직접구성_윤태은_2021011984.xlsx의 사본 | [보기](notes/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8.md) | [원본 목록](materials/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8/manifest.json) | [ZIP](downloads/1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8.zip?raw=true) |
 
 [개념 기억](memory/index.md) · [질문 기록](memory/questions.md)
 

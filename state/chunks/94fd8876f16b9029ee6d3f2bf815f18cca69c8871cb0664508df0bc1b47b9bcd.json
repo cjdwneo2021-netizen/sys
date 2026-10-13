@@ -1,0 +1,30 @@
+{
+  "concepts": [
+    {
+      "explanation": "조사 등을 제거하여 유사한 개념을 하나의 토큰으로 통합하는 과정입니다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-8]",
+      "name": "형태 단순화",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-8"
+      ]
+    },
+    {
+      "explanation": "용언의 활용형을 기본형으로 변환하여 어휘의 변형을 통일하는 과정입니다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-9]",
+      "name": "기본형 정리",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-9"
+      ]
+    },
+    {
+      "explanation": "문서별 단어의 빈도를 행렬 형태로 나타낸 데이터 구조로, 변수 선정을 위해 최종 토큰을 열로 구성합니다. [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-22]",
+      "name": "DTM (Document-Term Matrix)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-22"
+      ]
+    }
+  ],
+  "markdown": "## 1. NLP 전처리 단계 설계 및 DTM 구성\n\n### 전처리 단계 (Step 3 ~ Step 5)\n| 단계 | 항목 | 내용 | 목적 |\n|---|---|---|---|\n| [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-8] Step 3 | 형태 단순화 | 데이터를→데이터, 분석은→분석 | 같은 개념 통합 |\n| [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-9] Step 4 | 기본형 정리 | 찾는다→찾다, 만든다→만들다 | 변형어 통합 |\n| [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-10] Step 5 | 최종 토큰 확정 | 핵심 의미 중심으로 토큰 정리 | DTM용 변수 추출 |\n\n### 2. 단계별 결과 예시\n[SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-13] 문서를 토큰화하는 과정 예시입니다.\n| 문서 ID | 원본 텍스트 | Step 3 결과 | Step 4/5 결과 (최종 토큰) |\n|---|---|---|---|\n| K1 | 데이터 분석은 재미있고 유용하다! | 데이터 | 분석은 | 재미있고 | 유용하다 | 데이터 | 분석 | 재미 | 유용 |\n| K2 | 텍스트 마이닝은 유용한 데이터를 찾는다. | 텍스트 | 마이닝은 | 유용한 | 데이터를 | 찾는다 | 텍스트 | 마이닝 | 유용 | 데이터 | 찾다 |\n| K3 | 모델은 데이터에서 학습하고, 데이터를 활용한다. | 모델은 | 데이터에서 | 학습하고 | 데이터를 | 활용한다 | 모델 | 데이터 | 학습 | 데이터 | 활용 |\n| K4 | 파이썬과 R은 텍스트 데이터를 분석한다. | 파이썬과 | R은 | 텍스트 | 데이터를 | 분석한다 | 파이썬 | R | 텍스트 | 데이터 | 분석 |\n| K5 | 좋은 데이터는 좋은 모델을 만든다. | 좋은 | 데이터는 | 좋은 | 모델을 | 만든다 | 좋다 | 데이터 | 좋다 | 모델 | 만들다 |\n\n### 3. 예시 DTM (Document-Term Matrix)\n[SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-20] 각 문서 ID와 최종 토큰의 빈도수를 나타냅니다.\n| 문서 ID | R | 데이터 | 모델 | 만들다 | 마이닝 | 분석 | 유용 | 재미 | 좋다 | 찾다 | 텍스트 | 파이썬 | 학습 | 활용 |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n| K1 | 0.0 | 1.0 | 0.0 | 0.0 | 0.0 | 1.0 | 1.0 | 1.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 |\n| K2 | 0.0 | 1.0 | 0.0 | 0.0 | 1.0 | 0.0 | 1.0 | 0.0 | 0.0 | 1.0 | 1.0 | 0.0 | 0.0 | 0.0 |\n| K3 | 0.0 | 2.0 | 1.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 1.0 | 1.0 |\n| K4 | 1.0 | 1.0 | 0.0 | 0.0 | 0.0 | 1.0 | 0.0 | 0.0 | 0.0 | 0.0 | 1.0 | 1.0 | 0.0 | 0.0 |\n| K5 | 0.0 | 1.0 | 1.0 | 1.0 | 0.0 | 0.0 | 0.0 | 0.0 | 2.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 |",
+  "questions": [
+    "Step 5에서 최종 토큰 확정 시, 어떤 기준으로 핵심 의미를 판단하는가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-10]",
+    "DTM 구성 시 단어 빈도수가 0.0으로 표기되는 행렬값의 의미는 무엇인가? [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-5:row-23]"
+  ]
+}

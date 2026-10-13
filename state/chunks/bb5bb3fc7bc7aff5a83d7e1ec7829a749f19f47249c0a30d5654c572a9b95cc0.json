@@ -1,0 +1,25 @@
+{
+  "concepts": [
+    {
+      "explanation": "텍스트 분석의 품질을 높이기 위해 lowercase, punctuation removal, whitespace cleanup, tokenization, stopword removal, lemmatization/stemming 등을 단계별로 구성하는 작업 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-5].",
+      "name": "전처리 단계 설계",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-5"
+      ]
+    },
+    {
+      "explanation": "각 문서를 행(row)으로, 추출된 주요 단어를 열(column)로 배치하고, 문서 내 단어의 등장 빈도를 기록하는 행렬 구조 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-2, 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-21].",
+      "name": "DTM (문서-단어 행렬)",
+      "source_ids": [
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-2",
+        "1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-21"
+      ]
+    }
+  ],
+  "markdown": "### NLP 전처리 및 DTM 구성 학습\n\n이 실습은 텍스트 데이터를 전처리하고 문서-단어 행렬(DTM)을 직접 설계하는 과정을 다룹니다 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-1].\n\n#### 1. 권장 수업 흐름 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-11]\n1. 원본 텍스트에 적용할 전처리 단계 설계 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-12]\n2. 단계별 결과(정제, 토큰화, 최종 토큰) 예측 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-12]\n3. 최종 토큰 기반 DTM 변수(열) 헤더 선정 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-12]\n4. 각 문서별 단어 빈도 입력 및 DTM 완성 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-1:row-12]\n\n#### 2. 실습 설계 양식 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-4, 13, 22]\n- **전처리 설계**: Step 1~5까지 단계 이름, 적용 규칙, 필요성을 기입합니다.\n- **단계별 결과 예측**: 문서 ID(E1~E5)별로 원본 텍스트를 단계별로 변환합니다.\n  - *원본 예시*: E1: 'Data science is useful and fun!', E2: 'Text mining finds useful data.' 등 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-14, 15]\n- **DTM 구성**: 열(B22~O22)에 식별된 단어를 알파벳순으로 기입하고 각 문서의 등장 횟수를 기록합니다 [SOURCE 1Emvy2lGi1XM5prSCO5pNGk8UM-rMfht8:sheet-2:row-21].",
+  "questions": [
+    "어떤 전처리 단계가 분석 성능에 가장 큰 영향을 미치는가?",
+    "DTM의 열(변수)을 선정할 때 불필요한 단어를 걸러내는 기준은 무엇인가?",
+    "입력된 예시 외에 새로운 텍스트가 추가될 경우 기존 DTM 구조에 어떤 변화가 필요한가?"
+  ]
+}
